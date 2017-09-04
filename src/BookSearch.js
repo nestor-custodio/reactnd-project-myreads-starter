@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
 class BookSearch extends React.Component {
+
   render() {
     return (
       <div className="search-books">
@@ -24,8 +26,10 @@ class BookSearch extends React.Component {
           <ol className="books-grid"></ol>
         </div>
       </div>
-    )
-  }
-}
+    )  // return (...)
+  }  // render() {...}
+
+}  // class BookSearch
+
 
 export default BookSearch;
