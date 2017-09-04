@@ -27,6 +27,7 @@ class BookShelves extends React.Component {
                   name={shelf.name}
                   books={booksOnShelf}
                   shelves={this.props.shelves}
+                  onReshelf={this.props.onReshelf}
                 />
               )  // return (...)
 

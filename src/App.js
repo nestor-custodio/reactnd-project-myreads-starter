@@ -28,9 +28,28 @@ class BooksApp extends React.Component {
     ]  // shelves: [...]
   };  // state = {...}
 
+  resetAllBookData() {
+    BooksAPI.getAll().then((books) => {
+
+      this.setState({ books: books });
+
+    });  // BooksAPI.getAll().then(...)
+  }  // resetAllBookData() {...}
+
   componentDidMount() {
-    BooksAPI.getAll().then((books) => { this.setState({ books: books }) });
+    this.resetAllBookData();
   }  // componentDidMount() {...}
+
+  placeBookOnShelf(book, shelf) {
+    BooksAPI.update(book, shelf).then((booksOnShelves) => {
+
+      // Lazy reload of all book data and shelf contents. We could be smarter about how we're doing
+      // this, but it works just fine, and -- given the tiny domain of available books -- should not
+      // pose any significant performance problem.
+      this.resetAllBookData();
+
+    });  // BooksAPI.update(...).then(...)
+  }  // placeBookOnShelf() {...}
 
   render() {
     return (
@@ -40,11 +59,14 @@ class BooksApp extends React.Component {
           <BookShelves
             books={this.state.books}
             shelves={this.state.shelves}
+            onReshelf={(book, shelf) => { this.placeBookOnShelf(book, shelf); }}
           />
         )} />
 
         <Route exact path="/search" render={() => (
-          <BookSearch />
+          <BookSearch
+            onReshelf={(book, shelf) => { this.placeBookOnShelf(book, shelf); }}
+          />
         )} />
 
       </div>
