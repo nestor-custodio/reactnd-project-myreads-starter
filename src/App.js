@@ -4,6 +4,8 @@ import { Route } from 'react-router-dom';
 import BookShelves from './BookShelves.js';
 import BookSearch from './BookSearch.js';
 import * as BooksAPI from './BooksAPI';
+// WHEN DEBUGGING API ISSUES:
+// window.BooksAPI = BooksAPI;
 
 import './App.css'
 
@@ -28,6 +30,10 @@ class BooksApp extends React.Component {
     ]  // shelves: [...]
   };  // state = {...}
 
+  componentDidMount() {
+    this.resetAllBookData();
+  }  // componentDidMount() {...}
+
   resetAllBookData() {
     BooksAPI.getAll().then((books) => {
 
@@ -35,10 +41,6 @@ class BooksApp extends React.Component {
 
     });  // BooksAPI.getAll().then(...)
   }  // resetAllBookData() {...}
-
-  componentDidMount() {
-    this.resetAllBookData();
-  }  // componentDidMount() {...}
 
   placeBookOnShelf(book, shelf) {
     BooksAPI.update(book, shelf).then((booksOnShelves) => {
@@ -65,6 +67,7 @@ class BooksApp extends React.Component {
 
         <Route exact path="/search" render={() => (
           <BookSearch
+            shelves={this.state.shelves}
             onReshelf={(book, shelf) => { this.placeBookOnShelf(book, shelf); }}
           />
         )} />
