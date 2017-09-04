@@ -30,9 +30,9 @@ class BooksApp extends React.Component {
     ]  // shelves: [...]
   };  // state = {...}
 
-  componentDidMount() {
+  componentWillMount() {
     this.resetAllBookData();
-  }  // componentDidMount() {...}
+  }  // componentWillMount() {...}
 
   resetAllBookData() {
     BooksAPI.getAll().then((books) => {
