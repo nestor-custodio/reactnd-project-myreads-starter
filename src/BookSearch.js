@@ -15,12 +15,27 @@ class BookSearch extends React.Component {
     BooksAPI.search(searchTerms, 20).then((books) => {
 
       const booksIsAnArray = (books.constructor === Array);
-      this.setState({ booksFound: (booksIsAnArray ?  books : []) });
+      this.setState({ booksFound: (booksIsAnArray ? books : []) });
 
     });  // BooksAPI.search(...).then(...)
   }  // runLookup() {...}
 
   render() {
+
+    // Merge shelf data from "books" prop to "booksFound" state.
+    let booksFoundWithShelfData = this.state.booksFound.map((bookFound) => {
+      let shelfCode = this.props.books.reduce(
+        (shelfCode, book) => {
+          if (bookFound.id === book.id) return book.shelf;
+          else return shelfCode;
+        },  // () => {...}
+        'none'
+      );  // let shelfCode = *.books.reduce(...)
+      bookFound.shelf = shelfCode;
+
+      return bookFound;
+    });  // booksFoundWithShelfData = *.booksFound.map(...)
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -45,7 +60,7 @@ class BookSearch extends React.Component {
         <div className="search-books-results">
           <ol className="books-grid">
             {
-              this.state.booksFound.map((book) => {
+              booksFoundWithShelfData.map((book) => {
 
                 return (
                   <li key={book.id}>
@@ -57,7 +72,7 @@ class BookSearch extends React.Component {
                   </li>
                 )  // return (...)
 
-              })  // *.books.map(...)
+              })  // booksFoundWithShelfData.map(...)
             }
           </ol>
         </div>
